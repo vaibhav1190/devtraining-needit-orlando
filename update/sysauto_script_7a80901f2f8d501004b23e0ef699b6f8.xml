@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?><record_update table="sysauto_script">
+    <sysauto_script action="INSERT_OR_UPDATE">
+        <active>true</active>
+        <business_calendar/>
+        <condition/>
+        <conditional>false</conditional>
+        <entered_time>1970-01-01 08:00:00</entered_time>
+        <name>Find Overdue NeedIt Tasks</name>
+        <run_as display_value="System Administrator">6816f79cc0a8016401c5a33be04be441</run_as>
+        <run_as_tz/>
+        <run_dayofmonth>1</run_dayofmonth>
+        <run_dayofweek>1</run_dayofweek>
+        <run_period/>
+        <run_start>2020-06-02 03:44:56</run_start>
+        <run_time>1970-01-01 08:00:00</run_time>
+        <run_type>daily</run_type>
+        <script><![CDATA[// Get today's date and time
+
+var rightNow = new GlideDateTime();
+
+//Query NeedIt task table to get the Due records which are old 
+var dueRecords = new GlideRecord('x_58872_needit_needit_task');
+dueRecords.addQuery('due_date', '<=', rightNow);
+dueRecords.addQuery('state', '!=', 3);
+dueRecords.query();
+//write a log msg for each overdue record
+while (dueRecords.next()) {
+    gs.info('Overdue NeetIt Task records' + dueRecords.number);
+    gs.eventQueue('x_58872_needit.overdueNeedItTask', dueRecords, dueRecords.number, gs.getUserName());
+}]]></script>
+        <sys_class_name>sysauto_script</sys_class_name>
+        <sys_created_by>admin</sys_created_by>
+        <sys_created_on>2020-06-02 04:06:06</sys_created_on>
+        <sys_id>7a80901f2f8d501004b23e0ef699b6f8</sys_id>
+        <sys_mod_count>1</sys_mod_count>
+        <sys_name>Find Overdue NeedIt Tasks</sys_name>
+        <sys_package display_value="NeedIt" source="x_58872_needit">6ead8e780f603200cd674f8ce1050ed1</sys_package>
+        <sys_policy/>
+        <sys_scope display_value="NeedIt">6ead8e780f603200cd674f8ce1050ed1</sys_scope>
+        <sys_update_name>sysauto_script_7a80901f2f8d501004b23e0ef699b6f8</sys_update_name>
+        <sys_updated_by>admin</sys_updated_by>
+        <sys_updated_on>2020-06-02 17:14:00</sys_updated_on>
+        <time_zone>floating</time_zone>
+        <upgrade_safe>false</upgrade_safe>
+    </sysauto_script>
+</record_update>
